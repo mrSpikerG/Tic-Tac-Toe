@@ -45,79 +45,132 @@ namespace Tic_Tac_Toe
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Location = new Point(Screen.AllScreens[0].WorkingArea.Width / 2 - this.Width/2, Screen.AllScreens[0].WorkingArea.Height / 2 - this.Height/2);
             this.Icon = new Icon("Resources/icon.ico");
+            this.BackgroundImage = new Bitmap("Resources/MainMenu.png");
 
 
             //
             //      title
             //
             this.title_Label = new Label();
-            this.Controls.Add(title_Label);
+           /* this.Controls.Add(title_Label);
             this.title_Label.AutoSize = true;
             this.title_Label.Text = "Tic Tac Toe";
             this.title_Label.ForeColor = Color.Lime;
             this.title_Label.BackColor = Color.Transparent;
             this.title_Label.Font = new Font(this.title_Label.Font.FontFamily, 50);
             this.title_Label.Location = new Point(this.ClientSize.Width / 2 - title_Label.Size.Width/2, this.ClientSize.Height/ 2 - title_Label.Size.Height / 2 - this.ClientSize.Height / 3);
-
+*/
             //
             //      buttons
             //
-            buttons = new Button[4];
+            buttons = new ExtendedButton[4];
+            this.buttons[0] = new ExtendedButton("play");
+            this.buttons[1] = new ExtendedButton("settings");
+            this.buttons[2] = new ExtendedButton("rate");
+            this.buttons[3] = new ExtendedButton("exit");
             for (int i = 0; i < 4; i++)
             {
-                this.buttons[i] = new Button();
-                this.buttons[i].Size = new Size(300, 70);
-                this.buttons[i].Location = new Point(this.ClientSize.Width / 2 - buttons[i].Size.Width/2, this.ClientSize.Height / 2 - buttons[i].Size.Height / 2 + 72 * i - this.ClientSize.Height/10);
-                this.buttons[i].BackColor = Color.LimeGreen;
-                this.buttons[i].ForeColor = Color.OrangeRed;
+                this.buttons[i].Location = new Point(79-buttons[i].Size.Width, this.ClientSize.Height / 2 - buttons[i].Size.Height / 2 + 72 * i - this.ClientSize.Height/10);
                 this.buttons[i].Click += clickEvent;
+                this.buttons[i].MouseHover+= hoverEvent;
+                this.buttons[i].MouseLeave += leaveEvent;
+               
                 this.Controls.Add(buttons[i]);
             }
-            //buttons?
+
+            //
+            //      Timers
+            //
+            this.timerIncrease = new Timer();
+            this.timerIncrease.Interval = 20;
+            this.timerIncrease.Tick += timerIncreaseEvent;
+
+            this.timerDecrease = new Timer();
+            this.timerDecrease.Interval = 20;
+            this.timerDecrease.Tick += timerDecreaseEvent;
 
 
-            this.buttons[0].Text = "Play";
-            this.buttons[0].Name = "Play";
+            //
+            //      Buttons config
+            //
+            //this.buttons[0].Text = "Play";
+            this.buttons[0].Name = "0";
             this.buttons[0].Font = new Font(this.title_Label.Font.FontFamily, 30);
 
-            this.buttons[1].Text = "Settings";
-            this.buttons[1].Name = "Settings";
+          //  this.buttons[1].Text = "Settings";
+            this.buttons[1].Name = "1";
             this.buttons[1].Font = new Font(this.title_Label.Font.FontFamily, 30);
 
-            this.buttons[2].Text = "Leaderboard";
-            this.buttons[2].Name = "Leaderboard";
+          //  this.buttons[2].Text = "Leaderboard";
+            this.buttons[2].Name = "2";
             this.buttons[2].Font = new Font(this.title_Label.Font.FontFamily, 30);
 
-            this.buttons[3].Text = "Exit";
-            this.buttons[3].Name = "Exit";
+           // this.buttons[3].Text = "Exit";
+            this.buttons[3].Name = "3";
             this.buttons[3].Font = new Font(this.title_Label.Font.FontFamily, 30);
 
+            this.DoubleBuffered = true;
         }
 
+        private int chosedButton;
         public void clickEvent(object sender, EventArgs e)
         {
             switch ((sender as Button).Name)
             {
-                case "Play":
+                case "0":
                     chose_Form = new ChosePlayerForm();
                     chose_Form.Show();
                     break;
-                case "Settings":
+                case "1":
                     settings_Form = new SettingsForm();
                     settings_Form.Show();
                     break;
-                case "LeaderBoard":
+                case "2":
                     break;
-                case "Exit":
+                case "3":
                     Environment.Exit(0);
                     break;
             }
         }
+        public void hoverEvent(object sender, EventArgs e)
+        {
+            timerDecrease?.Stop();
+            chosedButton = (int)char.GetNumericValue((sender as ExtendedButton).Name[0]);
+            timerIncrease.Start();
+        }
+        public void leaveEvent(object sender, EventArgs e)
+        {
+            timerIncrease?.Stop();
+            chosedButton = (int)char.GetNumericValue((sender as ExtendedButton).Name[0]);
+            timerDecrease.Start();
+        }
+        public void timerIncreaseEvent(object sender, EventArgs e)
+        {
+            if (buttons[chosedButton].Location.X < 0)
+            {
+                buttons[chosedButton].Location = new Point(buttons[chosedButton].Location.X + 5, buttons[chosedButton].Location.Y);
+            }
+            else
+            {
+                timerIncrease.Stop();
+            }
+            this.Invalidate();
+        }
+        public void timerDecreaseEvent(object sender, EventArgs e)
+        {
+            if (buttons[chosedButton].Location.X > 79 - buttons[chosedButton].Size.Width)
+            {
+                buttons[chosedButton].Location = new Point(buttons[chosedButton].Location.X - 5, buttons[chosedButton].Location.Y);
+            }
+            this.Invalidate();
+        }
 
-        Button[] buttons;
+        ExtendedButton[] buttons;
         Label title_Label;
         ChosePlayerForm chose_Form;
         SettingsForm settings_Form;
+        Timer timerIncrease;
+        Timer timerDecrease;
         #endregion
     }
 }
