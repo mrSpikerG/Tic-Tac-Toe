@@ -36,7 +36,16 @@ namespace Tic_Tac_Toe
             this.StartPosition = FormStartPosition.Manual;
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = new Bitmap("Resources/InGameMenu.png");
+
+            if (!MainMenuForm.isCustomBack)
+            {
+                this.BackgroundImage = new Bitmap("Resources/InGameMenu.png");
+            }
+            else
+            {
+                this.BackColor = MainMenuForm.CustomBack;
+            }
+            
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Location = new Point(Screen.AllScreens[0].WorkingArea.Width / 2 - 100, Screen.AllScreens[0].WorkingArea.Height / 2 - 100);
 
@@ -102,7 +111,7 @@ namespace Tic_Tac_Toe
                 {
                     Directory.CreateDirectory("Data");
                 }
-                File.AppendAllText("Data/winRate.txt", $"{ChosePlayerForm.player1} vs {ChosePlayerForm.player2}\t{iIndex}x{jIndex}\twinner: {this.winner}\n");
+                File.AppendAllText("Data/winRate.txt", $"{ChosePlayerForm.player1} vs {ChosePlayerForm.player2} {iIndex}x{jIndex} winner: {this.winner}\n");
                 this.Close();
             }
 
