@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Tic_Tac_Toe.forms;
 
 namespace Tic_Tac_Toe
 {
@@ -66,9 +67,18 @@ namespace Tic_Tac_Toe
             this.comboBox.SelectedIndexChanged += Box_Click;
 
 
+
+            this.checkBox = new CheckBox();
+            this.checkBox.Checked = false;
+            this.checkBox.Click += checkBoxClick;
+            this.checkBox.Location = new Point(30, 300);
+            this.checkBox.AutoSize = true;
+            
+
             this.Controls.Add(comboBox);
             this.Controls.Add(choseSize_Label);
             this.Controls.Add(size_Label);
+            this.Controls.Add(checkBox);
 
             //init excel
             buttons = new Button[9, 9];
@@ -116,12 +126,33 @@ namespace Tic_Tac_Toe
                 }
             }
 
+            if (this.checkBox.Checked)
+            {
+                colorPicker_Form = new ColorPickerForm();
+                colorPicker_Form.Show();
+            }
+
         }
 
+        public void checkBoxClick(object sender, EventArgs e)
+        {
+            MainMenuForm.isCustomBack = (sender as CheckBox).Checked;
+            renderUpdate();
+        }
 
+        //
+        //  massive
+        //
         Button[,] buttons;
 
+        //
+        //  form
+        //
+        ColorPickerForm colorPicker_Form;
+
+
         ComboBox comboBox;
+        CheckBox checkBox;
         Label choseSize_Label;
         Label size_Label;
         #endregion

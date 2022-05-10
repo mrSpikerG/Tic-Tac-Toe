@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Tic_Tac_Toe.forms
 {
-    public partial class ColorPicker : Form
+    public partial class ColorPickerForm : Form
     {
-        public ColorPicker()
+        public ColorPickerForm()
         {
             InitializeComponent();
         }

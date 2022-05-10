@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Tic_Tac_Toe.forms;
 
 namespace Tic_Tac_Toe
 {
@@ -32,10 +33,13 @@ namespace Tic_Tac_Toe
         /// Требуемый метод для поддержки конструктора — не изменяйте 
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
-        public static string FieldSize="3x3";
+        public static string FieldSize = "3x3";
         public static int id = 0;
+        public static Color CustomBack;
+        public static bool isCustomBack;
         private void InitializeComponent()
         {
+            isCustomBack = false;
             this.Text = "Tic Tac Toe";
             this.BackColor = Color.ForestGreen;
             this.StartPosition = FormStartPosition.Manual;
@@ -43,7 +47,7 @@ namespace Tic_Tac_Toe
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Location = new Point(Screen.AllScreens[0].WorkingArea.Width / 2 - this.Width/2, Screen.AllScreens[0].WorkingArea.Height / 2 - this.Height/2);
+            this.Location = new Point(Screen.AllScreens[0].WorkingArea.Width / 2 - this.Width / 2, Screen.AllScreens[0].WorkingArea.Height / 2 - this.Height / 2);
             this.Icon = new Icon("Resources/icon.ico");
             this.BackgroundImage = new Bitmap("Resources/MainMenu.png");
 
@@ -52,14 +56,14 @@ namespace Tic_Tac_Toe
             //      title
             //
             this.title_Label = new Label();
-           /* this.Controls.Add(title_Label);
-            this.title_Label.AutoSize = true;
-            this.title_Label.Text = "Tic Tac Toe";
-            this.title_Label.ForeColor = Color.Lime;
-            this.title_Label.BackColor = Color.Transparent;
-            this.title_Label.Font = new Font(this.title_Label.Font.FontFamily, 50);
-            this.title_Label.Location = new Point(this.ClientSize.Width / 2 - title_Label.Size.Width/2, this.ClientSize.Height/ 2 - title_Label.Size.Height / 2 - this.ClientSize.Height / 3);
-*/
+            /* this.Controls.Add(title_Label);
+             this.title_Label.AutoSize = true;
+             this.title_Label.Text = "Tic Tac Toe";
+             this.title_Label.ForeColor = Color.Lime;
+             this.title_Label.BackColor = Color.Transparent;
+             this.title_Label.Font = new Font(this.title_Label.Font.FontFamily, 50);
+             this.title_Label.Location = new Point(this.ClientSize.Width / 2 - title_Label.Size.Width/2, this.ClientSize.Height/ 2 - title_Label.Size.Height / 2 - this.ClientSize.Height / 3);
+ */
             //
             //      buttons
             //
@@ -70,11 +74,11 @@ namespace Tic_Tac_Toe
             this.buttons[3] = new ExtendedButton("exit");
             for (int i = 0; i < 4; i++)
             {
-                this.buttons[i].Location = new Point(79-buttons[i].Size.Width, this.ClientSize.Height / 2 - buttons[i].Size.Height / 2 + 72 * i - this.ClientSize.Height/10);
+                this.buttons[i].Location = new Point(79 - buttons[i].Size.Width, this.ClientSize.Height / 2 - buttons[i].Size.Height / 2 + 72 * i - this.ClientSize.Height / 10);
                 this.buttons[i].Click += clickEvent;
-                this.buttons[i].MouseHover+= hoverEvent;
+                this.buttons[i].MouseHover += hoverEvent;
                 this.buttons[i].MouseLeave += leaveEvent;
-               
+
                 this.Controls.Add(buttons[i]);
             }
 
@@ -97,15 +101,15 @@ namespace Tic_Tac_Toe
             this.buttons[0].Name = "0";
             this.buttons[0].Font = new Font(this.title_Label.Font.FontFamily, 30);
 
-          //  this.buttons[1].Text = "Settings";
+            //  this.buttons[1].Text = "Settings";
             this.buttons[1].Name = "1";
             this.buttons[1].Font = new Font(this.title_Label.Font.FontFamily, 30);
 
-          //  this.buttons[2].Text = "Leaderboard";
+            //  this.buttons[2].Text = "Leaderboard";
             this.buttons[2].Name = "2";
             this.buttons[2].Font = new Font(this.title_Label.Font.FontFamily, 30);
 
-           // this.buttons[3].Text = "Exit";
+            // this.buttons[3].Text = "Exit";
             this.buttons[3].Name = "3";
             this.buttons[3].Font = new Font(this.title_Label.Font.FontFamily, 30);
 
@@ -126,6 +130,8 @@ namespace Tic_Tac_Toe
                     settings_Form.Show();
                     break;
                 case "2":
+                    winrate_Form = new WinRateForm();
+                    winrate_Form.Show();
                     break;
                 case "3":
                     Environment.Exit(0);
@@ -169,6 +175,7 @@ namespace Tic_Tac_Toe
         Label title_Label;
         ChosePlayerForm chose_Form;
         SettingsForm settings_Form;
+        WinRateForm winrate_Form;
         Timer timerIncrease;
         Timer timerDecrease;
         #endregion
